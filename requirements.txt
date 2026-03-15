@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pypdf
+sentence-transformers
+faiss-cpu
+numpy
+transformers
+langchain-text-splitters
+torch
+python-multipart
+requests
+sentencepiece
