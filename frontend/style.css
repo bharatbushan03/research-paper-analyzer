@@ -62,7 +62,7 @@ body {
     margin: auto;
     text-align: center;
     padding: 40px 20px;
-    max-width: 650px;
+    max-width: 850px;
     width: 100%;
     animation: fadeUp 0.6s ease-out;
 }
@@ -120,7 +120,7 @@ body {
     font-size: 1.25rem;
     line-height: 1.6;
     margin-bottom: 48px;
-    max-width: 500px;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -195,7 +195,7 @@ body {
 
 /* ===== ANALYSIS VIEW ===== */
 .analysis-container {
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     padding: 40px 20px 80px;

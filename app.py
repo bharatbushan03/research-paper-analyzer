@@ -37,7 +37,6 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 class QuestionRequest(BaseModel):
     question: str
 
-
 @app.post("/upload")
 async def upload_endpoint(file: UploadFile = File(...)):
     """Upload a PDF, extract text, and auto-generate analysis."""
@@ -80,8 +79,10 @@ async def upload_endpoint(file: UploadFile = File(...)):
 
         prompts = {
             "summary": "Provide a comprehensive summary of this research paper in 3-4 sentences. What is the paper about?",
-            "key_findings": "What are the key findings and contributions of this research paper? List the most important 3-4 points.",
-            "methodology": "What methodology or approach does this paper use? Describe the techniques, datasets, or frameworks used.",
+            "motivation": "What was the primary motivation or problem this research aimed to solve? Why is this work important?",
+            "methodology": "What methodology or approach does this paper use? Describe the techniques, datasets, or frameworks used in detail.",
+            "key_findings": "What are the key findings and results of this research paper? List the most important 3-4 points.",
+            "limitations": "What are the limitations, constraints, or potential weaknesses mentioned in this research paper?",
             "conclusion": "What are the main conclusions and future directions suggested by this paper?"
         }
 

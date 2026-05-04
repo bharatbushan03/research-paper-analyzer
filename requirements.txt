@@ -14,3 +14,4 @@ python-multipart
 requests
 sentencepiece
 dotenv
+langchain_nvidia_ai_endpoints

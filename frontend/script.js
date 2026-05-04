@@ -106,8 +106,10 @@ processBtn.addEventListener('click', async () => {
 
         if (res.ok && data.analysis) {
             renderSection('summaryText', data.analysis.summary);
-            renderSection('findingsText', data.analysis.key_findings);
+            renderSection('motivationText', data.analysis.motivation);
             renderSection('methodText', data.analysis.methodology);
+            renderSection('findingsText', data.analysis.key_findings);
+            renderSection('limitationsText', data.analysis.limitations);
             renderSection('conclusionText', data.analysis.conclusion);
 
             paperMeta.textContent = "Analysis Complete";
