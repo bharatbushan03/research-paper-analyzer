@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+langchain-huggingface
+pypdf
+sentence-transformers
+faiss-cpu
+numpy
+transformers
+langchain-community
+langchain-core
+langchain-classic
+torch
+python-multipart
+requests
+sentencepiece
+dotenv
