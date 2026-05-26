@@ -3,10 +3,12 @@
 Upload a PDF research paper and get an instant AI-powered analysis. The app extracts text, builds embeddings, and generates summaries, key findings, methodology notes, and conclusions. You can also ask follow-up questions through a built-in chat UI.
 
 ## Features
-- Upload a PDF and receive automated analysis sections
-- Ask follow-up questions about the same paper
-- Local model inference (no API keys required)
-- Simple single-page frontend served by FastAPI
+- **Automated Analysis**: Instant summary, key findings, methodology, and conclusions.
+- **AI Chat**: Ask follow-up questions with **full source citations** (View Sources).
+- **Smart Caching**: Processed papers are cached locally to avoid redundant computations.
+- **Metadata Extraction**: Automatically extracts Title and Author from the PDF.
+- **Local Inference**: No API keys required, runs on local models.
+- **Professional UI**: Clean, modern interface built with Streamlit.
 
 ## Tech Stack
 - **Frontend & Backend:** Streamlit
@@ -60,7 +62,7 @@ Open the URL provided by Streamlit in your browser.
 ## Deployment
 The repository includes a `render.yaml` with a default Render deployment setup:
 - Build: `pip install -r requirements.txt`
-- Start: `uvicorn app:app --host 0.0.0.0 --port $PORT`
+- Start: `streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0`
 
 ## Optional Script Usage
 `main.py` shows a simple script-based flow for running the pipeline locally. Update the PDF path before running it.
