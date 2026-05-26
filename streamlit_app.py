@@ -1,9 +1,11 @@
 import streamlit as st
 import os
+import hashlib
+import pickle
 from load_paper import load_pdf
 from text_splitter import split_text
 from embeddings import create_embeddings
-from vector_store import create_vector_store
+from vector_store import create_vector_store, save_index, load_index
 from search import search
 from llm import generate_answer
 
@@ -51,15 +53,53 @@ if "paper_data" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+def get_file_hash(file_content):
+    return hashlib.sha256(file_content).hexdigest()
+
 def process_paper(file):
     """Pipeline to process the uploaded PDF and generate initial analysis."""
-    # Save file temporarily
+    file_content = file.read()
+    file_hash = get_file_hash(file_content)
+
+    # Cache setup
+    cache_dir = "cache"
+    os.makedirs(cache_dir, exist_ok=True)
+    index_path = os.path.join(cache_dir, f"{file_hash}.index")
+    chunks_path = os.path.join(cache_dir, f"{file_hash}.chunks")
+    analysis_path = os.path.join(cache_dir, f"{file_hash}.analysis")
+
+    # Check if cached version exists
+    if os.path.exists(index_path) and os.path.exists(chunks_path) and os.path.exists(analysis_path):
+        st.info("⚡ Loading processed version from cache...")
+        with open(chunks_path, "rb") as f:
+            chunks = pickle.load(f)
+        index = load_index(index_path)
+        with open(analysis_path, "rb") as f:
+            analysis = pickle.load(f)
+
+        # We still need to load PDF for metadata
+        temp_file_path = os.path.join("temp_uploads", file.name)
+        os.makedirs("temp_uploads", exist_ok=True)
+        with open(temp_file_path, "wb") as f:
+            f.write(file_content)
+        _, metadata = load_pdf(temp_file_path)
+        os.remove(temp_file_path)
+
+        return {
+            "chunks": chunks,
+            "index": index,
+            "filename": file.name,
+            "analysis": analysis,
+            "metadata": metadata
+        }
+
+    # Save file temporarily for load_pdf
     temp_dir = "temp_uploads"
     os.makedirs(temp_dir, exist_ok=True)
     file_path = os.path.join(temp_dir, file.name)
 
     with open(file_path, "wb") as f:
-        f.write(file.read())
+        f.write(file_content)
 
     try:
         with st.status("Analyzing research paper...", expanded=True) as status:
@@ -94,6 +134,13 @@ def process_paper(file):
                 analysis[section] = answer
 
             status.update(label="Analysis Complete!", state="complete", description="Paper analyzed successfully.")
+
+        # Save to cache
+        save_index(index, index_path)
+        with open(chunks_path, "wb") as f:
+            pickle.dump(chunks, f)
+        with open(analysis_path, "wb") as f:
+            pickle.dump(analysis, f)
 
         return {
             "chunks": chunks,
