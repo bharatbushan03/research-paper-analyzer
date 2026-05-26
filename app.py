@@ -134,7 +134,7 @@ def process_paper(file):
                 answer = generate_answer(context, question)
                 analysis[section] = answer
 
-            status.update(label="Analysis Complete!", state="complete", description="Paper analyzed successfully.")
+            status.update(label="Analysis Complete!", state="complete")
 
         # Save to cache
         save_index(index, index_path)
