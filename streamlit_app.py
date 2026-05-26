@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import hashlib
 import pickle
+import pandas as pd
 from load_paper import load_pdf
 from text_splitter import split_text
 from embeddings import create_embeddings
@@ -201,18 +202,22 @@ if st.session_state.paper_data["analysis"]:
     # Analysis View
     st.header("🔍 Automated Analysis")
 
-    # Use columns for a cleaner layout
-    col1, col2 = st.columns(2)
+    # View toggle
+    view_mode = st.radio("Choose view mode:", ["Cards", "Table"], horizontal=True)
 
     analysis = st.session_state.paper_data["analysis"]
 
-    with col1:
-        st.markdown(f'<div class="analysis-card"><h4>📝 Summary</h4><p>{analysis["Summary"]}</p></div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="analysis-card"><h4>🛠️ Methodology</h4><p>{analysis["Methodology"]}</p></div>', unsafe_allow_html=True)
-
-    with col2:
-        st.markdown(f'<div class="analysis-card"><h4>💡 Key Findings</h4><p>{analysis["Key Findings"]}</p></div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="analysis-card"><h4>🏁 Conclusion</h4><p>{analysis["Conclusion"]}</p></div>', unsafe_allow_html=True)
+    if view_mode == "Cards":
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div class="analysis-card"><h4>📝 Summary</h4><p>{analysis["Summary"]}</p></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="analysis-card"><h4>🛠️ Methodology</h4><p>{analysis["Methodology"]}</p></div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown(f'<div class="analysis-card"><h4>💡 Key Findings</h4><p>{analysis["Key Findings"]}</p></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="analysis-card"><h4>🏁 Conclusion</h4><p>{analysis["Conclusion"]}</p></div>', unsafe_allow_html=True)
+    else:
+        df = pd.DataFrame(list(analysis.items()), columns=["Section", "Analysis"])
+        st.table(df)
 
     st.markdown("---")
 
