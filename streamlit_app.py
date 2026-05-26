@@ -127,9 +127,14 @@ with st.sidebar:
                 st.rerun()
 
     if st.session_state.paper_data["filename"]:
-        st.success(f"Current paper: {st.session_state.paper_data['filename']}")
-        if st.button("Clear Analysis"):
+        st.success(f"📄 Current paper: {st.session_state.paper_data['filename']}")
+        if st.button("🗑️ Clear Analysis"):
             st.session_state.paper_data = {"chunks": None, "index": None, "filename": None, "analysis": None}
+            st.session_state.messages = []
+            st.rerun()
+
+    if "messages" in st.session_state and len(st.session_state.messages) > 0:
+        if st.button("💬 Clear Chat History"):
             st.session_state.messages = []
             st.rerun()
 
