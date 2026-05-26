@@ -44,7 +44,8 @@ if "paper_data" not in st.session_state:
         "chunks": None,
         "index": None,
         "filename": None,
-        "analysis": None
+        "analysis": None,
+        "metadata": None
     }
 
 if "messages" not in st.session_state:
@@ -62,8 +63,8 @@ def process_paper(file):
 
     try:
         with st.status("Analyzing research paper...", expanded=True) as status:
-            st.write("📖 Extracting text from PDF...")
-            paper_text = load_pdf(file_path)
+            st.write("📖 Extracting text and metadata from PDF...")
+            paper_text, metadata = load_pdf(file_path)
 
             if not paper_text or len(paper_text.strip()) < 50:
                 st.error("Could not extract enough text from this PDF. It may be a scanned image.")
@@ -98,7 +99,8 @@ def process_paper(file):
             "chunks": chunks,
             "index": index,
             "filename": file.name,
-            "analysis": analysis
+            "analysis": analysis,
+            "metadata": metadata
         }
     except Exception as e:
         st.error(f"An error occurred: {e}")
@@ -129,7 +131,7 @@ with st.sidebar:
     if st.session_state.paper_data["filename"]:
         st.success(f"📄 Current paper: {st.session_state.paper_data['filename']}")
         if st.button("🗑️ Clear Analysis"):
-            st.session_state.paper_data = {"chunks": None, "index": None, "filename": None, "analysis": None}
+            st.session_state.paper_data = {"chunks": None, "index": None, "filename": None, "analysis": None, "metadata": None}
             st.session_state.messages = []
             st.rerun()
 
@@ -140,6 +142,15 @@ with st.sidebar:
 
 # Main Content
 if st.session_state.paper_data["analysis"]:
+    # Metadata View
+    metadata = st.session_state.paper_data["metadata"]
+    if metadata:
+        st.markdown(f"""
+        <div style="background-color: #e9ecef; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #6c757d;">
+            <strong>Title:</strong> {metadata['Title']} | <strong>Author:</strong> {metadata['Author']}
+        </div>
+        """, unsafe_allow_html=True)
+
     # Analysis View
     st.header("🔍 Automated Analysis")
 
