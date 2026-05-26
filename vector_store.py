@@ -1,7 +1,7 @@
 import faiss
 import numpy as np
 
-def create_vector_store(embeddings):
+def create_vector_store(embeddings: np.ndarray) -> faiss.IndexFlatL2:
     embeddings = np.array(embeddings)
     dimension = embeddings.shape[1]
 
