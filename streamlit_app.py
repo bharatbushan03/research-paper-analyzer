@@ -160,6 +160,10 @@ if st.session_state.paper_data["analysis"]:
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+            if "sources" in message:
+                with st.expander("View Sources"):
+                    for i, source in enumerate(message["sources"]):
+                        st.markdown(f"**Source {i+1}:**\n{source}")
 
     # Chat input
     if prompt := st.chat_input("What would you like to know about this paper?"):
@@ -176,7 +180,19 @@ if st.session_state.paper_data["analysis"]:
                     context = " ".join(results)
                     answer = generate_answer(context, prompt)
                     st.markdown(answer)
-                    st.session_state.messages.append({"role": "assistant", "content": answer})
+
+                    # Add response and sources to session state
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": answer,
+                        "sources": results
+                    })
+
+                    # Show sources for the current response immediately
+                    with st.expander("View Sources"):
+                        for i, source in enumerate(results):
+                            st.markdown(f"**Source {i+1}:**\n{source}")
+
                 except Exception as e:
                     st.error(f"Error generating answer: {e}")
 
