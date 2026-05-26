@@ -1,11 +1,12 @@
 from sentence_transformers import SentenceTransformer
+from logger import logger
 
 _model = None
 
 def get_model():
     global _model
     if _model is None:
-        print("--- Loading embedding model (all-MiniLM-L6-v2) ---")
+        logger.info("Loading embedding model (all-MiniLM-L6-v2)")
         _model = SentenceTransformer('all-MiniLM-L6-v2')
     return _model
 

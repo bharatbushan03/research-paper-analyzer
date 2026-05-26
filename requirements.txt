@@ -10,3 +10,4 @@ torch
 python-multipart
 requests
 sentencepiece
+streamlit

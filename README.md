@@ -9,12 +9,11 @@ Upload a PDF research paper and get an instant AI-powered analysis. The app extr
 - Simple single-page frontend served by FastAPI
 
 ## Tech Stack
-- **Backend:** FastAPI, Uvicorn
+- **Frontend & Backend:** Streamlit
 - **PDF parsing:** PyPDF
 - **Embeddings:** Sentence Transformers (`all-MiniLM-L6-v2`)
 - **Vector search:** FAISS
 - **LLM:** Hugging Face Transformers (`google/flan-t5-small`)
-- **Frontend:** HTML, CSS, JavaScript
 
 ## Getting Started
 
@@ -31,50 +30,29 @@ pip install -r requirements.txt
 
 ### Run Locally
 ```bash
-uvicorn app:app --reload
+streamlit run streamlit_app.py
 ```
 
-Open http://localhost:8000 in your browser.
+Open the URL provided by Streamlit in your browser.
 
 ## Usage
-1. Upload a PDF from the landing page.
+1. Upload a PDF from the sidebar.
 2. Wait while the analysis is generated.
 3. Review summary, key findings, methodology, and conclusion.
 4. Ask follow-up questions in the chat section.
 
 > **Note:** The app works best with text-based PDFs. Scanned or image-only PDFs may fail to extract text.
 
-## API Endpoints
-
-### `POST /upload`
-Uploads a PDF and generates the analysis.
-
-- **Request:** `multipart/form-data` with `file`
-- **Response:** `{ "analysis": { "summary": "...", "key_findings": "...", "methodology": "...", "conclusion": "..." }, "filename": "..." }`
-
-### `POST /ask`
-Ask a follow-up question about the most recently analyzed paper.
-
-- **Request:** JSON body `{ "question": "..." }`
-- **Response:** `{ "answer": "..." }`
-
-### `GET /`
-Serves the frontend UI.
-
 ## Project Structure
 ```
 .
-├── app.py                 # FastAPI app and API routes
+├── streamlit_app.py       # Streamlit app with UI and pipeline integration
 ├── embeddings.py          # Embedding model loader and encoder
 ├── load_paper.py          # PDF text extraction
 ├── llm.py                 # LLM prompt and generation logic
 ├── search.py              # Vector search helper
 ├── text_splitter.py       # Chunking logic
 ├── vector_store.py        # FAISS index creation
-├── frontend/              # Static UI assets
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
 ├── requirements.txt
 └── render.yaml            # Render deployment config
 ```

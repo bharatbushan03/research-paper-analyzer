@@ -4,6 +4,7 @@ from embeddings import create_embeddings
 from vector_store import create_vector_store
 from search import search
 from llm import generate_answer
+from logger import logger
 
 paper_text = load_pdf(r'C:\Users\dell\Downloads\attention-mechanism.pdf')
 
@@ -21,5 +22,5 @@ context = " ".join(results)
 
 answer = generate_answer(context, query)
 
-print("\nAnswer:\n")
-print(answer)
+logger.info("\nAnswer:\n")
+logger.info(answer)

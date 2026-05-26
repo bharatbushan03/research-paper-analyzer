@@ -1,4 +1,5 @@
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+from logger import logger
 
 _model = None
 _tokenizer = None
@@ -7,7 +8,7 @@ _tokenizer = None
 def get_generator():
     global _model, _tokenizer
     if _model is None:
-        print("--- Loading LLM (google/flan-t5-small) ---")
+        logger.info("Loading LLM (google/flan-t5-small)")
         _tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
         _model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small")
     return _model, _tokenizer
